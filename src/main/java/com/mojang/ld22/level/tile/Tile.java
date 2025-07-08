@@ -9,8 +9,12 @@ import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.item.Item;
 import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
+import com.mojang.ld22.level.tile.impl.*;
+
+import lombok.Getter;
 
 public class Tile {
+
     public static int tickCount = 0;
     public static Tile[] tiles = new Tile[256];
     public static Tile grass = new GrassTile(0);
@@ -42,11 +46,15 @@ public class Tile {
     public boolean connectsToLava = false;
     public boolean connectsToWater = false;
     protected Random random = new Random();
+    @Getter
+    private final TileType type;
 
-    public Tile(int id) {
+    public Tile(int id, TileType type) {
         this.id = (byte) id;
-        if (tiles[id] != null) throw new RuntimeException("Duplicate tile ids!");
+        if (tiles[id] != null)
+            throw new RuntimeException("Duplicate tile ids!");
         tiles[id] = this;
+        this.type = type;
     }
 
     public void render(Screen screen, Level level, int x, int y) {

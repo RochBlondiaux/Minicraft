@@ -1,13 +1,12 @@
 package com.mojang.ld22;
 
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.io.IOException;
-import java.util.Random;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import com.mojang.ld22.entity.Player;
@@ -19,19 +18,22 @@ import com.mojang.ld22.level.Level;
 import com.mojang.ld22.level.tile.Tile;
 import com.mojang.ld22.screen.*;
 import com.mojang.ld22.screen.Menu;
+import com.mojang.ld22.utils.ImageUtils;
 
 public class Game extends Canvas implements Runnable {
 
     public static final String NAME = "Minicraft";
-    public static final int HEIGHT = 120;
-    public static final int WIDTH = 160;
+
+    public static int HEIGHT = 250;
+    public static int WIDTH = 340;
+
     private static final int SCALE = 3;
     public int gameTime = 0;
     public Player player;
     public Menu menu;
     public boolean hasWon = false;
-    private final BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-    private final int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+    private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+    private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
     private boolean running = false;
     private Screen screen;
     private Screen lightScreen;
@@ -45,22 +47,21 @@ public class Game extends Canvas implements Runnable {
     private int pendingLevelChange;
     private int wonTimer = 0;
 
-    public static void main(String[] args) {
-        Game game = new Game();
-        game.setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-        game.setMaximumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-        game.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+    public Game() {
+        this.setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+        this.setMaximumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+        this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 
         JFrame frame = new JFrame(Game.NAME);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        frame.add(game, BorderLayout.CENTER);
+        frame.add(this, BorderLayout.CENTER);
         frame.pack();
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        game.start();
+        this.start();
     }
 
     public void setMenu(Menu menu) {
@@ -117,16 +118,13 @@ public class Game extends Canvas implements Runnable {
                     int g1 = ((gg + mid) / 2) * 230 / 255 + 10;
                     int b1 = ((bb + mid) / 2) * 230 / 255 + 10;
                     colors[pp++] = r1 << 16 | g1 << 8 | b1;
-
                 }
             }
         }
-        try {
-            screen = new Screen(WIDTH, HEIGHT, new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/icons.png"))));
-            lightScreen = new Screen(WIDTH, HEIGHT, new SpriteSheet(ImageIO.read(Game.class.getResourceAsStream("/icons.png"))));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        BufferedImage icons = ImageUtils.resource("icons.png");
+        this.screen = new Screen(WIDTH, HEIGHT, new SpriteSheet(icons));
+        this.lightScreen = new Screen(WIDTH, HEIGHT, new SpriteSheet(icons));
 
         resetGame();
         setMenu(new TitleMenu());
@@ -274,26 +272,26 @@ public class Game extends Canvas implements Runnable {
     private void renderGui() {
         for (int y = 0; y < 2; y++) {
             for (int x = 0; x < 20; x++) {
-                screen.render(x * 8, screen.h - 16 + y * 8, 12 * 32, Color.get(000, 000, 000, 000), 0);
+                screen.render(x * 8, screen.h - 16 + y * 8, 12 * 32, Color.get(0, 0, 0, 0), 0);
             }
         }
 
         for (int i = 0; i < 10; i++) {
             if (i < player.health)
-                screen.render(i * 8, screen.h - 16, 12 * 32, Color.get(000, 200, 500, 533), 0);
+                screen.render(i * 8, screen.h - 16, 12 * 32, Color.get(0, 200, 500, 533), 0);
             else
-                screen.render(i * 8, screen.h - 16, 12 * 32, Color.get(000, 100, 000, 000), 0);
+                screen.render(i * 8, screen.h - 16, 12 * 32, Color.get(0, 100, 0, 0), 0);
 
             if (player.staminaRechargeDelay > 0) {
                 if (player.staminaRechargeDelay / 4 % 2 == 0)
-                    screen.render(i * 8, screen.h - 8, 1 + 12 * 32, Color.get(000, 555, 000, 000), 0);
+                    screen.render(i * 8, screen.h - 8, 1 + 12 * 32, Color.get(0, 555, 0, 0), 0);
                 else
-                    screen.render(i * 8, screen.h - 8, 1 + 12 * 32, Color.get(000, 110, 000, 000), 0);
+                    screen.render(i * 8, screen.h - 8, 1 + 12 * 32, Color.get(0, 110, 0, 0), 0);
             } else {
                 if (i < player.stamina)
-                    screen.render(i * 8, screen.h - 8, 1 + 12 * 32, Color.get(000, 220, 550, 553), 0);
+                    screen.render(i * 8, screen.h - 8, 1 + 12 * 32, Color.get(0, 220, 550, 553), 0);
                 else
-                    screen.render(i * 8, screen.h - 8, 1 + 12 * 32, Color.get(000, 110, 000, 000), 0);
+                    screen.render(i * 8, screen.h - 8, 1 + 12 * 32, Color.get(0, 110, 0, 0), 0);
             }
         }
         if (player.activeItem != null) {

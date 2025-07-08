@@ -1,4 +1,4 @@
-package com.mojang.ld22.level.tile;
+package com.mojang.ld22.level.tile.impl;
 
 import java.util.Random;
 
@@ -6,12 +6,15 @@ import com.mojang.ld22.entity.Entity;
 import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.level.Level;
+import com.mojang.ld22.level.tile.Tile;
+import com.mojang.ld22.level.tile.TileType;
 
 public class LavaTile extends Tile {
-    private Random wRandom = new Random();
+
+    private final Random wRandom = new Random();
 
     public LavaTile(int id) {
-        super(id);
+        super(id, TileType.LAVA);
         connectsToSand = true;
         connectsToLava = true;
     }

@@ -1,4 +1,4 @@
-package com.mojang.ld22.level.tile;
+package com.mojang.ld22.level.tile.impl;
 
 import com.mojang.ld22.entity.Entity;
 import com.mojang.ld22.entity.Player;
@@ -8,17 +8,20 @@ import com.mojang.ld22.item.Item;
 import com.mojang.ld22.item.ToolItem;
 import com.mojang.ld22.item.ToolType;
 import com.mojang.ld22.level.Level;
+import com.mojang.ld22.level.tile.Tile;
+import com.mojang.ld22.level.tile.TileType;
 
 public class FarmTile extends Tile {
+
     public FarmTile(int id) {
-        super(id);
+        super(id, TileType.FARMLAND);
     }
 
     public void render(Screen screen, Level level, int x, int y) {
         int col = Color.get(level.dirtColor - 121, level.dirtColor - 11, level.dirtColor, level.dirtColor + 111);
-        screen.render(x * 16 + 0, y * 16 + 0, 2 + 32, col, 1);
-        screen.render(x * 16 + 8, y * 16 + 0, 2 + 32, col, 0);
-        screen.render(x * 16 + 0, y * 16 + 8, 2 + 32, col, 0);
+        screen.render(x * 16, y * 16, 2 + 32, col, 1);
+        screen.render(x * 16 + 8, y * 16, 2 + 32, col, 0);
+        screen.render(x * 16, y * 16 + 8, 2 + 32, col, 0);
         screen.render(x * 16 + 8, y * 16 + 8, 2 + 32, col, 1);
     }
 

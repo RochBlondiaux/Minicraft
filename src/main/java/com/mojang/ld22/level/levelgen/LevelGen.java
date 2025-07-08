@@ -9,9 +9,11 @@ import javax.swing.*;
 import com.mojang.ld22.level.tile.Tile;
 
 public class LevelGen {
+
     private static final Random random = new Random();
     public double[] values;
-    private int w, h;
+    private final int w;
+    private final int h;
 
     public LevelGen(int w, int h, int featureSize) {
         this.w = w;
@@ -63,40 +65,38 @@ public class LevelGen {
     }
 
     public static byte[][] createAndValidateTopMap(int w, int h) {
-        int attempt = 0;
         do {
             byte[][] result = createTopMap(w, h);
-
             int[] count = new int[256];
 
             for (int i = 0; i < w * h; i++) {
                 count[result[0][i] & 0xff]++;
             }
-            if (count[Tile.rock.id & 0xff] < 100) continue;
-            if (count[Tile.sand.id & 0xff] < 100) continue;
-            if (count[Tile.grass.id & 0xff] < 100) continue;
-            if (count[Tile.tree.id & 0xff] < 100) continue;
-            if (count[Tile.stairsDown.id & 0xff] < 2) continue;
+
+            if (count[Tile.rock.id & 0xff] < 100
+                || count[Tile.sand.id & 0xff] < 100
+                || count[Tile.grass.id & 0xff] < 100
+                || count[Tile.tree.id & 0xff] < 100
+                || count[Tile.stairsDown.id & 0xff] < 2) continue;
 
             return result;
-
         } while (true);
     }
 
     public static byte[][] createAndValidateUndergroundMap(int w, int h, int depth) {
-        int attempt = 0;
         do {
             byte[][] result = createUndergroundMap(w, h, depth);
-
             int[] count = new int[256];
 
             for (int i = 0; i < w * h; i++) {
                 count[result[0][i] & 0xff]++;
             }
-            if (count[Tile.rock.id & 0xff] < 100) continue;
-            if (count[Tile.dirt.id & 0xff] < 100) continue;
-            if (count[(Tile.ironOre.id & 0xff) + depth - 1] < 20) continue;
-            if (depth < 3) if (count[Tile.stairsDown.id & 0xff] < 2) continue;
+            if (count[Tile.rock.id & 0xff] < 100
+                || count[Tile.dirt.id & 0xff] < 100
+                || count[(Tile.ironOre.id & 0xff) + depth - 1] < 20) continue;
+
+            if (depth < 3 && count[Tile.stairsDown.id & 0xff] < 2)
+                continue;
 
             return result;
 
@@ -104,17 +104,16 @@ public class LevelGen {
     }
 
     public static byte[][] createAndValidateSkyMap(int w, int h) {
-        int attempt = 0;
         do {
             byte[][] result = createSkyMap(w, h);
-
             int[] count = new int[256];
 
             for (int i = 0; i < w * h; i++) {
                 count[result[0][i] & 0xff]++;
             }
-            if (count[Tile.cloud.id & 0xff] < 2000) continue;
-            if (count[Tile.stairsDown.id & 0xff] < 2) continue;
+            if (count[Tile.cloud.id & 0xff] < 2000
+                || count[Tile.stairsDown.id & 0xff] < 2)
+                continue;
 
             return result;
 
@@ -271,7 +270,7 @@ public class LevelGen {
                 double nval = Math.abs(nnoise1.values[i] - nnoise2.values[i]);
                 nval = Math.abs(nval - nnoise3.values[i]) * 3 - 2;
 
-                double wval = Math.abs(wnoise1.values[i] - wnoise2.values[i]);
+                double wval;
                 wval = Math.abs(nval - wnoise3.values[i]) * 3 - 2;
 
                 double xd = x / (w - 1.0) * 2 - 1;
@@ -397,14 +396,11 @@ public class LevelGen {
     }
 
     public static void main(String[] args) {
-        int d = 0;
         while (true) {
             int w = 128;
             int h = 128;
 
             byte[] map = LevelGen.createAndValidateTopMap(w, h)[0];
-            // byte[] map = LevelGen.createAndValidateUndergroundMap(w, h, (d++ % 3) + 1)[0];
-            // byte[] map = LevelGen.createAndValidateSkyMap(w, h)[0];
 
             BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
             int[] pixels = new int[w * h];
@@ -426,7 +422,7 @@ public class LevelGen {
                 }
             }
             img.setRGB(0, 0, w, h, pixels, 0, w);
-            JOptionPane.showMessageDialog(null, null, "Another", JOptionPane.YES_NO_OPTION, new ImageIcon(img.getScaledInstance(w * 4, h * 4, Image.SCALE_AREA_AVERAGING)));
+            JOptionPane.showMessageDialog(null, null, "Another", JOptionPane.ERROR_MESSAGE, new ImageIcon(img.getScaledInstance(w * 4, h * 4, Image.SCALE_AREA_AVERAGING)));
         }
     }
 

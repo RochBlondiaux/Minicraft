@@ -3,7 +3,8 @@ package com.mojang.ld22.gfx;
 public class Screen {
     public static final int BIT_MIRROR_X = 0x01;
     public static final int BIT_MIRROR_Y = 0x02;
-    public final int w, h;
+    public int w;
+    public int h;
     /*
      * public static final int MAP_WIDTH = 64; // Must be 2^x public static final int MAP_WIDTH_MASK = MAP_WIDTH - 1;
      *
@@ -13,8 +14,8 @@ public class Screen {
     public int yOffset;
     public int[] pixels;
 
-    private SpriteSheet sheet;
-    private int[] dither = new int[]{0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5,};
+    private final SpriteSheet sheet;
+    private final int[] dither = new int[]{0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5,};
 
     public Screen(int w, int h, SpriteSheet sheet) {
         this.sheet = sheet;
@@ -36,11 +37,12 @@ public class Screen {
          */
     }
 
-    /*
-     * public void renderBackground() { for (int yt = yScroll >> 3; yt <= (yScroll + h) >> 3; yt++) { int yp = yt * 8 - yScroll; for (int xt = xScroll >> 3; xt <= (xScroll + w) >> 3; xt++) { int xp = xt * 8 - xScroll; int ti = (xt & (MAP_WIDTH_MASK)) + (yt & (MAP_WIDTH_MASK)) * MAP_WIDTH; render(xp, yp, tiles[ti], colors[ti], databits[ti]); } }
-     *
-     * for (int i = 0; i < sprites.size(); i++) { Sprite s = sprites.get(i); render(s.x, s.y, s.img, s.col, s.bits); } sprites.clear(); }
-     */
+    public void resize(int w, int h) {
+        if (this.w == w && this.h == h) return;
+        this.w = w;
+        this.h = h;
+        pixels = new int[w * h];
+    }
 
     public void clear(int color) {
         for (int i = 0; i < pixels.length; i++)

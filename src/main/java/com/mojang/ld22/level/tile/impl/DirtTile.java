@@ -1,4 +1,4 @@
-package com.mojang.ld22.level.tile;
+package com.mojang.ld22.level.tile.impl;
 
 import com.mojang.ld22.entity.ItemEntity;
 import com.mojang.ld22.entity.Player;
@@ -10,18 +10,21 @@ import com.mojang.ld22.item.ToolItem;
 import com.mojang.ld22.item.ToolType;
 import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
+import com.mojang.ld22.level.tile.Tile;
+import com.mojang.ld22.level.tile.TileType;
 import com.mojang.ld22.sound.Sound;
 
 public class DirtTile extends Tile {
+
     public DirtTile(int id) {
-        super(id);
+        super(id, TileType.DIRT);
     }
 
     public void render(Screen screen, Level level, int x, int y) {
         int col = Color.get(level.dirtColor, level.dirtColor, level.dirtColor - 111, level.dirtColor - 111);
-        screen.render(x * 16 + 0, y * 16 + 0, 0, col, 0);
-        screen.render(x * 16 + 8, y * 16 + 0, 1, col, 0);
-        screen.render(x * 16 + 0, y * 16 + 8, 2, col, 0);
+        screen.render(x * 16, y * 16, 0, col, 0);
+        screen.render(x * 16 + 8, y * 16, 1, col, 0);
+        screen.render(x * 16, y * 16 + 8, 2, col, 0);
         screen.render(x * 16 + 8, y * 16 + 8, 3, col, 0);
     }
 

@@ -6,7 +6,8 @@ import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.item.Item;
 
 public class InventoryMenu extends Menu {
-    private Player player;
+
+    private final Player player;
     private int selected = 0;
 
     public InventoryMenu(Player player) {

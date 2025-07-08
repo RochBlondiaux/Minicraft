@@ -1,13 +1,15 @@
-package com.mojang.ld22.level.tile;
+package com.mojang.ld22.level.tile.impl;
 
 import com.mojang.ld22.entity.Entity;
 import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.level.Level;
+import com.mojang.ld22.level.tile.Tile;
+import com.mojang.ld22.level.tile.TileType;
 
 public class HoleTile extends Tile {
     public HoleTile(int id) {
-        super(id);
+        super(id, TileType.HOLE);
         connectsToSand = true;
         connectsToWater = true;
         connectsToLava = true;

@@ -1,4 +1,4 @@
-package com.mojang.ld22.level.tile;
+package com.mojang.ld22.level.tile.impl;
 
 import com.mojang.ld22.entity.Entity;
 import com.mojang.ld22.entity.ItemEntity;
@@ -14,10 +14,13 @@ import com.mojang.ld22.item.ToolItem;
 import com.mojang.ld22.item.ToolType;
 import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
+import com.mojang.ld22.level.tile.Tile;
+import com.mojang.ld22.level.tile.TileType;
 
 public class TreeTile extends Tile {
+
     public TreeTile(int id) {
-        super(id);
+        super(id, TileType.TREE);
         connectsToGrass = true;
     }
 

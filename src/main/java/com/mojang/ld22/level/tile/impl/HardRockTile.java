@@ -1,4 +1,4 @@
-package com.mojang.ld22.level.tile;
+package com.mojang.ld22.level.tile.impl;
 
 import com.mojang.ld22.entity.Entity;
 import com.mojang.ld22.entity.ItemEntity;
@@ -14,10 +14,13 @@ import com.mojang.ld22.item.ToolItem;
 import com.mojang.ld22.item.ToolType;
 import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
+import com.mojang.ld22.level.tile.Tile;
+import com.mojang.ld22.level.tile.TileType;
 
 public class HardRockTile extends Tile {
+
     public HardRockTile(int id) {
-        super(id);
+        super(id, TileType.HARD_ROCK);
     }
 
     public void render(Screen screen, Level level, int x, int y) {
@@ -36,11 +39,11 @@ public class HardRockTile extends Tile {
 
         if (!u && !l) {
             if (!ul)
-                screen.render(x * 16 + 0, y * 16 + 0, 0, col, 0);
+                screen.render(x * 16, y * 16, 0, col, 0);
             else
-                screen.render(x * 16 + 0, y * 16 + 0, 7 + 0 * 32, transitionColor, 3);
+                screen.render(x * 16, y * 16, 7, transitionColor, 3);
         } else
-            screen.render(x * 16 + 0, y * 16 + 0, (l ? 6 : 5) + (u ? 2 : 1) * 32, transitionColor, 3);
+            screen.render(x * 16, y * 16, (l ? 6 : 5) + (u ? 2 : 1) * 32, transitionColor, 3);
 
         if (!u && !r) {
             if (!ur)
@@ -75,8 +78,7 @@ public class HardRockTile extends Tile {
     }
 
     public boolean interact(Level level, int xt, int yt, Player player, Item item, int attackDir) {
-        if (item instanceof ToolItem) {
-            ToolItem tool = (ToolItem) item;
+        if (item instanceof ToolItem tool) {
             if (tool.type == ToolType.pickaxe && tool.level == 4) {
                 if (player.payStamina(4 - tool.level)) {
                     hurt(level, xt, yt, random.nextInt(10) + (tool.level) * 5 + 10);

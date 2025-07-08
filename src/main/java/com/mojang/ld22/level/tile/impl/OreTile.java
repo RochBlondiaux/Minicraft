@@ -1,4 +1,4 @@
-package com.mojang.ld22.level.tile;
+package com.mojang.ld22.level.tile.impl;
 
 import com.mojang.ld22.entity.Entity;
 import com.mojang.ld22.entity.ItemEntity;
@@ -14,22 +14,25 @@ import com.mojang.ld22.item.ToolItem;
 import com.mojang.ld22.item.ToolType;
 import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
+import com.mojang.ld22.level.tile.Tile;
+import com.mojang.ld22.level.tile.TileType;
 
 public class OreTile extends Tile {
-    private Resource toDrop;
+
+    private final Resource toDrop;
     private int color;
 
     public OreTile(int id, Resource toDrop) {
-        super(id);
+        super(id, TileType.ORE);
         this.toDrop = toDrop;
         this.color = toDrop.color & 0xffff00;
     }
 
     public void render(Screen screen, Level level, int x, int y) {
         color = (toDrop.color & 0xffffff00) + Color.get(level.dirtColor);
-        screen.render(x * 16 + 0, y * 16 + 0, 17 + 1 * 32, color, 0);
-        screen.render(x * 16 + 8, y * 16 + 0, 18 + 1 * 32, color, 0);
-        screen.render(x * 16 + 0, y * 16 + 8, 17 + 2 * 32, color, 0);
+        screen.render(x * 16, y * 16, 17 + 32, color, 0);
+        screen.render(x * 16 + 8, y * 16, 18 + 32, color, 0);
+        screen.render(x * 16, y * 16 + 8, 17 + 2 * 32, color, 0);
         screen.render(x * 16 + 8, y * 16 + 8, 18 + 2 * 32, color, 0);
     }
 
@@ -42,8 +45,7 @@ public class OreTile extends Tile {
     }
 
     public boolean interact(Level level, int xt, int yt, Player player, Item item, int attackDir) {
-        if (item instanceof ToolItem) {
-            ToolItem tool = (ToolItem) item;
+        if (item instanceof ToolItem tool) {
             if (tool.type == ToolType.pickaxe) {
                 if (player.payStamina(6 - tool.level)) {
                     hurt(level, xt, yt, 1);

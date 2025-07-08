@@ -15,25 +15,23 @@ import com.mojang.ld22.item.ResourceItem;
 import com.mojang.ld22.sound.Sound;
 
 public class CraftingMenu extends Menu {
-    private Player player;
+
+    private final Player player;
+    private final List<Recipe> recipes;
     private int selected = 0;
 
-    private List<Recipe> recipes;
-
     public CraftingMenu(List<Recipe> recipes, Player player) {
-        this.recipes = new ArrayList<Recipe>(recipes);
+        this.recipes = new ArrayList<>(recipes);
         this.player = player;
 
         for (int i = 0; i < recipes.size(); i++) {
             this.recipes.get(i).checkCanCraft(player);
         }
 
-        Collections.sort(this.recipes, new Comparator<Recipe>() {
-            public int compare(Recipe r1, Recipe r2) {
-                if (r1.canCraft && !r2.canCraft) return -1;
-                if (!r1.canCraft && r2.canCraft) return 1;
-                return 0;
-            }
+        this.recipes.sort((r1, r2) -> {
+            if (r1.canCraft && !r2.canCraft) return -1;
+            if (!r1.canCraft && r2.canCraft) return 1;
+            return 0;
         });
     }
 
@@ -56,8 +54,9 @@ public class CraftingMenu extends Menu {
                 r.craft(player);
                 Sound.craft.play();
             }
-            for (int i = 0; i < recipes.size(); i++) {
-                recipes.get(i).checkCanCraft(player);
+
+            for (Recipe recipe : recipes) {
+                recipe.checkCanCraft(player);
             }
         }
     }
@@ -68,7 +67,7 @@ public class CraftingMenu extends Menu {
         Font.renderFrame(screen, "Crafting", 0, 1, 11, 11);
         renderItemList(screen, 0, 1, 11, 11, recipes, selected);
 
-        if (recipes.size() > 0) {
+        if (!recipes.isEmpty()) {
             Recipe recipe = recipes.get(selected);
             int hasResultItems = player.inventory.count(recipe.resultTemplate);
             int xo = 13 * 8;

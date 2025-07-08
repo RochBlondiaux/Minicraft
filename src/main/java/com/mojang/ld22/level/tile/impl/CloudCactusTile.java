@@ -1,4 +1,4 @@
-package com.mojang.ld22.level.tile;
+package com.mojang.ld22.level.tile.impl;
 
 import com.mojang.ld22.entity.AirWizard;
 import com.mojang.ld22.entity.Entity;
@@ -12,23 +12,25 @@ import com.mojang.ld22.item.Item;
 import com.mojang.ld22.item.ToolItem;
 import com.mojang.ld22.item.ToolType;
 import com.mojang.ld22.level.Level;
+import com.mojang.ld22.level.tile.Tile;
+import com.mojang.ld22.level.tile.TileType;
 
 public class CloudCactusTile extends Tile {
+
     public CloudCactusTile(int id) {
-        super(id);
+        super(id, TileType.CLOUD_CACTUS);
     }
 
     public void render(Screen screen, Level level, int x, int y) {
         int color = Color.get(444, 111, 333, 555);
-        screen.render(x * 16 + 0, y * 16 + 0, 17 + 1 * 32, color, 0);
-        screen.render(x * 16 + 8, y * 16 + 0, 18 + 1 * 32, color, 0);
-        screen.render(x * 16 + 0, y * 16 + 8, 17 + 2 * 32, color, 0);
+        screen.render(x * 16, y * 16, 17 + 32, color, 0);
+        screen.render(x * 16 + 8, y * 16, 18 + 32, color, 0);
+        screen.render(x * 16, y * 16 + 8, 17 + 2 * 32, color, 0);
         screen.render(x * 16 + 8, y * 16 + 8, 18 + 2 * 32, color, 0);
     }
 
     public boolean mayPass(Level level, int x, int y, Entity e) {
-        if (e instanceof AirWizard) return true;
-        return false;
+        return e instanceof AirWizard;
     }
 
     public void hurt(Level level, int x, int y, Mob source, int dmg, int attackDir) {
@@ -36,16 +38,13 @@ public class CloudCactusTile extends Tile {
     }
 
     public boolean interact(Level level, int xt, int yt, Player player, Item item, int attackDir) {
-        if (item instanceof ToolItem) {
-            ToolItem tool = (ToolItem) item;
-            if (tool.type == ToolType.pickaxe) {
-                if (player.payStamina(6 - tool.level)) {
-                    hurt(level, xt, yt, 1);
-                    return true;
-                }
-            }
-        }
-        return false;
+        if (!(item instanceof ToolItem toolItem)
+            || toolItem.type != ToolType.pickaxe
+            || !player.payStamina(6 - toolItem.level))
+            return false;
+
+        hurt(level, xt, yt, 1);
+        return true;
     }
 
     public void hurt(Level level, int x, int y, int dmg) {

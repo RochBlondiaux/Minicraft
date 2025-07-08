@@ -3,7 +3,8 @@ package com.mojang.ld22.screen;
 import com.mojang.ld22.gfx.Screen;
 
 public class LevelTransitionMenu extends Menu {
-    private int dir;
+
+    private final int dir;
     private int time = 0;
 
     public LevelTransitionMenu(int dir) {

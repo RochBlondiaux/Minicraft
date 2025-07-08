@@ -5,19 +5,18 @@ import com.mojang.ld22.entity.Player;
 import com.mojang.ld22.gfx.Font;
 import com.mojang.ld22.gfx.Screen;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class ContainerMenu extends Menu {
-    private Player player;
-    private Inventory container;
+
+    private final Player player;
+    private final Inventory container;
+    private final String title;
+
     private int selected = 0;
-    private String title;
     private int oSelected;
     private int window = 0;
-
-    public ContainerMenu(Player player, String title, Inventory container) {
-        this.player = player;
-        this.title = title;
-        this.container = container;
-    }
 
     public void tick() {
         if (input.menu.clicked) game.setMenu(null);

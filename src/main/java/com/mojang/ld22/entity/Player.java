@@ -12,6 +12,7 @@ import com.mojang.ld22.item.Item;
 import com.mojang.ld22.item.PowerGloveItem;
 import com.mojang.ld22.level.Level;
 import com.mojang.ld22.level.tile.Tile;
+import com.mojang.ld22.level.tile.TileType;
 import com.mojang.ld22.screen.InventoryMenu;
 import com.mojang.ld22.sound.Sound;
 
@@ -329,7 +330,8 @@ public class Player extends Mob {
         while (true) {
             int x = random.nextInt(level.w);
             int y = random.nextInt(level.h);
-            if (level.getTile(x, y) == Tile.grass) {
+
+            if (level.getTile(x, y).getType().equals(TileType.GRASS)) {
                 this.x = x * 16 + 8;
                 this.y = y * 16 + 8;
                 return true;

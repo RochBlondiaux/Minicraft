@@ -1,4 +1,4 @@
-package com.mojang.ld22.level.tile;
+package com.mojang.ld22.level.tile.impl;
 
 import com.mojang.ld22.entity.ItemEntity;
 import com.mojang.ld22.entity.Player;
@@ -10,12 +10,15 @@ import com.mojang.ld22.item.ToolItem;
 import com.mojang.ld22.item.ToolType;
 import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
+import com.mojang.ld22.level.tile.Tile;
+import com.mojang.ld22.level.tile.TileType;
 import com.mojang.ld22.sound.Sound;
 
 public class GrassTile extends Tile {
+
     public GrassTile(int id) {
-        super(id);
-        connectsToGrass = true;
+        super(id, TileType.GRASS);
+        this.connectsToGrass = true;
     }
 
     public void render(Screen screen, Level level, int x, int y) {

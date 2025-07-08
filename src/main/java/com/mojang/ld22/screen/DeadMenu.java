@@ -4,11 +4,12 @@ import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Font;
 import com.mojang.ld22.gfx.Screen;
 
-public class DeadMenu extends Menu {
-    private int inputDelay = 60;
+import lombok.NoArgsConstructor;
 
-    public DeadMenu() {
-    }
+@NoArgsConstructor
+public class DeadMenu extends Menu {
+
+    private int inputDelay = 60;
 
     public void tick() {
         if (inputDelay > 0)

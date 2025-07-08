@@ -1,16 +1,19 @@
-package com.mojang.ld22.level.tile;
+package com.mojang.ld22.level.tile.impl;
 
 import com.mojang.ld22.entity.Mob;
 import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.level.Level;
+import com.mojang.ld22.level.tile.Tile;
+import com.mojang.ld22.level.tile.TileType;
 
 public class SaplingTile extends Tile {
-    private Tile onType;
-    private Tile growsTo;
+
+    private final Tile onType;
+    private final Tile growsTo;
 
     public SaplingTile(int id, Tile onType, Tile growsTo) {
-        super(id);
+        super(id, TileType.SAPLING);
         this.onType = onType;
         this.growsTo = growsTo;
         connectsToSand = onType.connectsToSand;

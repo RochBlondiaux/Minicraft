@@ -5,12 +5,13 @@ import com.mojang.ld22.gfx.Font;
 import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.sound.Sound;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class TitleMenu extends Menu {
+
     private static final String[] options = {"Start game", "How to play", "About"};
     private int selected = 0;
-
-    public TitleMenu() {
-    }
 
     public void tick() {
         if (input.up.clicked) selected--;

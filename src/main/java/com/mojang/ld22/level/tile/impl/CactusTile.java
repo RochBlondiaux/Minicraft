@@ -1,4 +1,4 @@
-package com.mojang.ld22.level.tile;
+package com.mojang.ld22.level.tile.impl;
 
 import com.mojang.ld22.entity.Entity;
 import com.mojang.ld22.entity.ItemEntity;
@@ -10,18 +10,21 @@ import com.mojang.ld22.gfx.Screen;
 import com.mojang.ld22.item.ResourceItem;
 import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
+import com.mojang.ld22.level.tile.Tile;
+import com.mojang.ld22.level.tile.TileType;
 
 public class CactusTile extends Tile {
+
     public CactusTile(int id) {
-        super(id);
+        super(id, TileType.CACTUS);
         connectsToSand = true;
     }
 
     public void render(Screen screen, Level level, int x, int y) {
         int col = Color.get(20, 40, 50, level.sandColor);
-        screen.render(x * 16 + 0, y * 16 + 0, 8 + 2 * 32, col, 0);
-        screen.render(x * 16 + 8, y * 16 + 0, 9 + 2 * 32, col, 0);
-        screen.render(x * 16 + 0, y * 16 + 8, 8 + 3 * 32, col, 0);
+        screen.render(x * 16, y * 16, 8 + 2 * 32, col, 0);
+        screen.render(x * 16 + 8, y * 16, 9 + 2 * 32, col, 0);
+        screen.render(x * 16, y * 16 + 8, 8 + 3 * 32, col, 0);
         screen.render(x * 16 + 8, y * 16 + 8, 9 + 3 * 32, col, 0);
     }
 

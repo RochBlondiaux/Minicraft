@@ -1,4 +1,4 @@
-package com.mojang.ld22.level.tile;
+package com.mojang.ld22.level.tile.impl;
 
 import com.mojang.ld22.entity.Entity;
 import com.mojang.ld22.entity.ItemEntity;
@@ -12,10 +12,13 @@ import com.mojang.ld22.item.ToolItem;
 import com.mojang.ld22.item.ToolType;
 import com.mojang.ld22.item.resource.Resource;
 import com.mojang.ld22.level.Level;
+import com.mojang.ld22.level.tile.Tile;
+import com.mojang.ld22.level.tile.TileType;
 
 public class WheatTile extends Tile {
+
     public WheatTile(int id) {
-        super(id);
+        super(id, TileType.WHEAT);
     }
 
     public void render(Screen screen, Level level, int x, int y) {
@@ -30,9 +33,9 @@ public class WheatTile extends Tile {
             icon = 3;
         }
 
-        screen.render(x * 16 + 0, y * 16 + 0, 4 + 3 * 32 + icon, col, 0);
-        screen.render(x * 16 + 8, y * 16 + 0, 4 + 3 * 32 + icon, col, 0);
-        screen.render(x * 16 + 0, y * 16 + 8, 4 + 3 * 32 + icon, col, 1);
+        screen.render(x * 16, y * 16, 4 + 3 * 32 + icon, col, 0);
+        screen.render(x * 16 + 8, y * 16, 4 + 3 * 32 + icon, col, 0);
+        screen.render(x * 16, y * 16 + 8, 4 + 3 * 32 + icon, col, 1);
         screen.render(x * 16 + 8, y * 16 + 8, 4 + 3 * 32 + icon, col, 1);
     }
 
@@ -44,8 +47,7 @@ public class WheatTile extends Tile {
     }
 
     public boolean interact(Level level, int xt, int yt, Player player, Item item, int attackDir) {
-        if (item instanceof ToolItem) {
-            ToolItem tool = (ToolItem) item;
+        if (item instanceof ToolItem tool) {
             if (tool.type == ToolType.shovel) {
                 if (player.payStamina(4 - tool.level)) {
                     level.setTile(xt, yt, Tile.dirt, 0);

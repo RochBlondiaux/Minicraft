@@ -13,7 +13,7 @@ public class Chest extends Furniture {
     }
 
     public boolean use(Player player, int attackDir) {
-        player.game.setMenu(new ContainerMenu(player, "Chest", inventory));
+        player.game.setMenu(new ContainerMenu(player, inventory, "Chest"));
         return true;
     }
 }
